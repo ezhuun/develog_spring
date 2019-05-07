@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+	<context:component-scan
+		base-package="com.project.develog.dao" />
+	<context:component-scan
+		base-package="com.project.develog.service" />
+	<context:component-scan
+		base-package="com.project.develog.controller" />
+		
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/css/**" location="/resources/css/" />
+	<resources mapping="/images/**" location="/resources/images/" />
+	<resources mapping="/js/**" location="/resources/js/" />
+	<resources mapping="/upload/**" location="/resources/upload/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+
+	<beans:bean
+		class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+
+	<!-- 파일 업로드용 resolver -->
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="defaultEncoding" value="UTF-8" />
+		<beans:property name="maxUploadSize" value="10485760" />
+	</beans:bean>
+	
+	<!-- 파일업로드를 위한 디렉토리 설정 -->
+	<beans:bean id="uploadPath" class="java.lang.String">
+		<beans:constructor-arg value="C:\java\sts\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\develog\resources\upload" />
+	</beans:bean>
+
+	<!-- Interceptor 설정 -->
+	<!-- 아래 exclude-mapping 페이지를 제외한 페이지에서는 로그인 권한여부를 체크한다 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/resources/**" />
+			<mvc:exclude-mapping path="/css/**" />
+			<mvc:exclude-mapping path="/images/**" />
+			<mvc:exclude-mapping path="/js/**" />
+			<mvc:exclude-mapping path="/upload/**" />
+			<mvc:exclude-mapping path="/register" />
+			<mvc:exclude-mapping path="/registerCheck" />
+			<mvc:exclude-mapping path="/login" />
+			<mvc:exclude-mapping path="/loginCheck" />
+			<mvc:exclude-mapping path="/logout" />
+			<mvc:exclude-mapping path="/reSendAuthEmail" />
+			<mvc:exclude-mapping path="/authEmail" />
+			<mvc:exclude-mapping path="/passwdEdit" />
+			<mvc:exclude-mapping path="/reRegisterPassword" />
+			<mvc:exclude-mapping path="/rePasswdCheck" />
+			<beans:bean id="authenticationInterceptor"
+				class="com.project.develog.AuthenticationInterceptor"></beans:bean>
+		</mvc:interceptor>
+
+		<!-- login페이지로 접근시 세션값이 유지 되었다면 list페이지로 이동 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/login" />
+			<mvc:mapping path="/register" />
+			<beans:bean id="autoLoginInterceptor"
+				class="com.project.develog.AutoLoginInterceptor"></beans:bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+</beans:beans>

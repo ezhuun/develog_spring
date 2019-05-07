@@ -1,0 +1,22 @@
+drop table member;
+
+create table member (
+  m_no                  number(11)			NOT NULL,
+  uuid					varchar(50)			DEFAULT '' NOT NULL ,
+  email					varchar(100)		UNIQUE NOT NULL,
+  name					varchar(20)			DEFAULT '' NOT NULL,
+  passwd				varchar(255)		DEFAULT '' NOT NULL,
+  auth_key              varchar(50)         not null,
+  auth_status           number(1)           default 0,
+  regdt					date	    		NOT NULL,
+  last_login			date		    	NOT NULL,
+  session_key           varchar(50)         DEFAULT 'none' NOT NULL,
+  session_limit         timestamp,
+  updir_original        varchar(255)        DEFAULT '',
+  updir_thumnail        varchar(255)        DEFAULT '',
+  primary key ( uuid )
+);
+
+delete from member;
+
+select * from member;

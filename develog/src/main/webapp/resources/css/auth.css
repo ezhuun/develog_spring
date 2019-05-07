@@ -1,0 +1,200 @@
+@charset "utf-8";
+
+html,
+body {
+	background-color: #2F3136;
+}
+
+.wrapper-login {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #202225;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	z-index: 0;
+}
+
+.wrapper-login::after {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: url('../images/login_background.png') no-repeat;
+	background-size: cover;
+	z-index: -1;
+}
+
+.wrap__logo {
+	flex: .1;
+	width: 100%;
+	height: auto;
+}
+
+.wrap__sign {
+	flex: 1;
+	padding-top: 9.5rem;
+	padding-left: 15rem;
+}
+
+.signBox-dark {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 30rem;
+	background: #36393F;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
+	animation-name: fadeIn-upDown;
+	animation-duration: .5s;
+	padding-bottom: 2.5rem;
+}
+
+.signBox-dark a,
+.signBox-dark a:hover,
+.signBox-dark a:active,
+.signBox-dark a:visited {
+	font-size: .8rem;
+	color: #7289DA;
+	text-decoration: none;
+}
+
+.signBox_flex_column {
+	flex: 1;
+	position: relative;
+	margin-top: 1.5rem;
+}
+
+.signBox_flex_column div {
+	position: relative;
+	padding-left: 2.5rem;
+	padding-right: 2.5rem;
+}
+
+.signBox_title {
+	font-size: 2rem;
+	margin-top: 1.8rem;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.signBox_input {
+	font-size: .9rem;
+	color: #B9BBBE;
+}
+
+.signBox_input input+span {
+	color: #B9BBBE !important;
+}
+
+input.input-text-dark {
+	margin: .5rem 0;
+	display: block;
+	background: rgba(0, 0, 0, 0.1);
+	border: 1px solid #040405;
+	box-sizing: border-box;
+	border-radius: 3px;
+	color: #f6f6f7;
+	font-size: 1rem;
+	width: 100%;
+	height: 2.5rem;
+	padding: .6rem;
+}
+
+input.input-text-dark:focus {
+	outline: none;
+}
+
+.signBox_btn {
+	margin-top: .5rem;
+}
+
+.signBox_btn button {
+	width: 100%;
+	height: 3rem;
+	background: #7289DA;
+	border-radius: 3px;
+	border: none;
+	color: #FFFFFF;
+	font-size: 0.9rem;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.signBox_signup {
+	font-size: .8rem;
+	color: #72767D;
+}
+
+@media (max-width: 768px) {
+	.logo_a {
+		margin: 1rem;
+	}
+	.wrap__sign {
+		padding: 1rem;
+	}
+	.signBox-dark {
+		width: 100%;
+		min-width: 20rem;
+	}
+	.signBox_flex_column {
+		margin-top: 1rem;
+	}
+	.signBox_title {
+		font-size: 1.5rem;
+	}
+}
+
+.loginStr {
+	opacity: 1;
+	transition: opacity .5s;
+}
+
+.none {
+	display: none;
+	opacity: 0;
+}
+
+#loading {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	opacity: 1;
+	transition: opacity .5s;
+}
+
+#loading.none {
+	display: none;
+	opacity: 0;
+}
+
+#loading div {
+	padding: 0;
+	margin: 0;
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	background-color: #FFFFFF;
+	animation-name: upDown;
+	animation-duration: 0.5s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+#loading div+div {
+	margin-left: 0.25rem;
+}
+
+@-webkit-keyframes upDown {
+	from {
+		top: 0;
+	}
+	to {
+		top: 0.275rem;
+	}
+}

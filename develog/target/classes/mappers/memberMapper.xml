@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MemberMapper">
+
+	<!-- 회원가입 query -->
+	<insert id="insertMember">
+	<![CDATA[
+		INSERT INTO
+			member (m_no, uuid, email, name, passwd, auth_key, regdt, last_login)
+		VALUES
+			(
+				(SELECT NVL(MAX(m_no+1), 0) FROM member)
+			 	, #{uuid}
+			 	, #{email}
+			 	, #{name}
+			 	, #{passwd}
+			 	, #{auth_key}
+			 	, sysdate
+			 	, sysdate
+			 )
+	 ]]>
+	</insert>
+	
+	<!-- 회원등록체크 query -->
+	<select id="registerCheck" resultType="_int">
+	<![CDATA[
+		SELECT count(*)
+		FROM member
+		WHERE email = #{email}
+	]]>
+	</select>
+	
+	<!-- 로그인 체크 query -->
+	<select id="loginCheck" resultType="com.project.develog.dto.MemberDTO">
+	<![CDATA[
+		SELECT
+			*
+		FROM member
+		WHERE email = #{email} AND ROWNUM <= 1
+	]]>
+	</select>
+	
+	<select id="loadMemberInfo" resultType="com.project.develog.dto.MemberDTO">
+	<![CDATA[
+		SELECT
+			*
+		FROM member
+		WHERE uuid = #{uuid} AND ROWNUM <= 1
+	]]>
+	</select>
+
+	<update id="keepLogin">
+	<![CDATA[
+		UPDATE
+			member
+		SET
+			session_key = #{session_key}
+			, session_limit = #{session_limit}
+		WHERE
+			uuid = #{uuid}
+	]]>
+	</update>
+	
+	
+	<select id="checkMemberWithSessionKey" resultType="com.project.develog.dto.MemberDTO">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			member
+		WHERE
+			session_key = #{session_key} AND
+			session_limit > sysdate
+	]]>
+	</select>
+	
+	<!-- 최종로그인 시간 업데이트 -->
+	<update id="lastLoginUpdate">
+	<![CDATA[
+		UPDATE
+			member
+		SET
+			last_login = sysdate
+		WHERE
+			uuid = #{uuid}
+	]]>
+	</update>
+	
+	
+	<!-- 최종로그인 시간 업데이트 -->
+	<update id="authEmailUpdate">
+	<![CDATA[
+		UPDATE
+			member
+		SET
+			auth_status = 1
+		WHERE
+			email = #{email} AND
+			auth_key = #{auth_key}
+	]]>
+	</update>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="rePasswd">
+	<![CDATA[
+		UPDATE
+			member
+		SET
+			passwd = #{passwd}
+		WHERE
+			uuid = #{uuid}
+	]]>
+	</update>
+	
+	<!-- 이름 변경 -->
+	<update id="changeName">
+	<![CDATA[
+		UPDATE
+			member
+		SET
+			name = #{name}
+		WHERE
+			uuid = #{uuid}
+	]]>
+	</update>
+
+
+	<update id="photoUpdate">
+	<![CDATA[
+		UPDATE
+			member
+		SET
+			updir_original = #{upDirOriginal}
+			, updir_thumnail = #{upDirThumnail}
+		WHERE
+			uuid = #{uuid}
+	]]>
+	</update>
+	
+	<update id="photoDelete">
+	<![CDATA[
+		UPDATE
+			member
+		SET
+			updir_original = ''
+			, updir_thumnail = ''
+		WHERE
+			uuid = #{uuid}
+	]]>
+	</update>
+	
+	<delete id="memberDelete">
+	<![CDATA[
+		DELETE
+		FROM member
+		WHERE
+			uuid = #{uuid}
+	]]>
+	</delete>
+	
+	
+</mapper>
